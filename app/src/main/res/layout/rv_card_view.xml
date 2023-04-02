@@ -15,9 +15,9 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="match_parent"
+            android:layout_width="160dp"
             android:layout_height="160dp"
-            android:contentDescription="TODO"
+            android:contentDescription="@string/preview"
             android:scaleType="centerCrop" />
 
         <TextView
