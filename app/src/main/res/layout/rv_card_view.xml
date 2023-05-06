@@ -15,15 +15,15 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
             android:contentDescription="@string/preview"
             android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/titleTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:padding="8dp"
             android:textSize="16sp"
             android:textStyle="bold" />

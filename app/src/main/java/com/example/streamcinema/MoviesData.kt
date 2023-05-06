@@ -17,13 +17,15 @@ class MoviesData {
             ignoreUnknownKeys = true
         }
     }
-    private val url = "http://192.168.24.116:8080"
+    private val url = "http://192.168.34.116:9090"
 
     suspend fun fullMovies(): List<Movie> = withContext(Dispatchers.IO) {
-        val moviesResponse = client.get("http://192.168.24.116:8080/movie/all")
+        val moviesResponse = client.get("${url}/movie/all")
         Log.d("RESPONSE", moviesResponse.toString())
         return@withContext Json.decodeFromString<List<Movie>>(moviesResponse.body())
     }
 
-    fun moviePreview(id: Int) = "${url}movie/preview/$id"
+    fun moviePreview(id: Int) = "$url/movie/preview/$id"
+
+    fun movieFile(id: Int) = "$url/movie/watch/$id"
 }

@@ -43,7 +43,6 @@ data class MovieGenre(
 )
 
 @Serializable
-@SerialName("movie")
 data class Movie(
     val id: Int,
     val title: String,
@@ -86,4 +85,20 @@ data class Director(
     val id: Int,
     val firstName: String,
     val lastName: String
+)
+
+@Serializable
+data class CinemaUser(
+    val id: Int,
+    val lastName: String,
+    val firstName: String,
+    val middleName: String?,
+    val email: String,
+    val password: String
+)
+
+@Serializable
+data class EmailPass(
+    val email: String,
+    val password: String
 )

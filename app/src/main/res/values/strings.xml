@@ -1,4 +1,15 @@
 <resources>
-    <string name="app_name">StreamCinema</string>
+    <string name="app_name">SkyCinema</string>
     <string name="preview">Preview</string>
+    <string name="pass">Password</string>
+    <string name="email">Email</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+    <string name="middle_name">Отчество</string>
+    <string name="name">Имя</string>
+    <string name="last_name">Фамилия</string>
+    <string name="main">Главное</string>
+    <string name="my">Моё</string>
+    <string name="search">Поиск</string>
+    <string name="profile">Профиль</string>
 </resources>

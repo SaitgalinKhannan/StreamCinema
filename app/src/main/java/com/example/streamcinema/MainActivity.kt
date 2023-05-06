@@ -1,32 +1,57 @@
 package com.example.streamcinema
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.media3.common.util.UnstableApi
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.streamcinema.databinding.RvCardViewBinding
 import com.example.streamcinema.model.Movie
-import com.squareup.picasso.Picasso
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 
 class MainActivity : AppCompatActivity() {
 
     private val scope = CoroutineScope(Dispatchers.IO)
     private val moviesData = MoviesData()
+    private val backPressDelay = 2000
+    private var backPressTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val prefs = getSharedPreferences("myPrefs", MODE_PRIVATE)
+        val isLoggedIn = prefs.getBoolean("isLoggedIn", false)
+
+        if (!isLoggedIn) {
+            val intent = Intent(this, SignIn::class.java)
+            startActivity(intent)
+        }
+
         val movies = mutableListOf<Movie>()
 
-        val movieAdapter = MovieAdapter(movies, moviesData)
+        val movieAdapter = MovieAdapter(movies, moviesData, this)
+        movieAdapter.setOnItemClickListener(@UnstableApi object : OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                //Toast.makeText(applicationContext, moviesData.movieFile(movies[position].id), Toast.LENGTH_LONG).show()
+                val intent = Intent(applicationContext, WatchVideoActivity::class.java).apply {
+                    putExtra("VIDEO_URL", moviesData.movieFile(movies[position].id))
+                }
+                startActivity(intent)
+            }
+        })
 
         val layoutManager = GridLayoutManager(this, 2)
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
@@ -34,30 +59,82 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = movieAdapter
 
         lifecycleScope.launch {
-            val newList = moviesData.fullMovies().subList(0, 2)
-            movieAdapter.updateData(newList) // обновите адаптер с новыми данными
+            val newList = moviesData.fullMovies()
+            movieAdapter.updateData(newList)
+        }
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.mainButton -> {
+                    startActivity(Intent(this@MainActivity, MainActivity::class.java))
+                    true
+                }
+
+                R.id.bookmarkButton -> {
+                    startActivity(Intent(this@MainActivity, Demo::class.java))
+                    true
+                }
+
+                R.id.searchButton -> {
+                    startActivity(Intent(this@MainActivity, Demo::class.java))
+                    true
+                }
+
+                R.id.profileButton -> {
+                    startActivity(Intent(this@MainActivity, Demo::class.java))
+                    true
+                }
+
+                else -> false
+            }
+        }
+
+    }
+
+    override fun onBackPressed() {
+        val currentTime = System.currentTimeMillis()
+        if (backPressTime + backPressDelay > currentTime) {
+            //super.onBackPressed()
+            finishAffinity()
+        } else {
+            backPressTime = currentTime
+            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show()
         }
     }
 }
 
+interface OnItemClickListener {
+    fun onItemClick(position: Int)
+}
+
 class MovieAdapter(
     private val moviesList: MutableList<Movie>,
-    private val moviesData: MoviesData
+    private val moviesData: MoviesData,
+    private val context: Context
 ) :
     RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
+    private var clickListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        clickListener = listener
+    }
+
     inner class MovieViewHolder(private val binding: RvCardViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            itemView.setOnClickListener {
+                clickListener?.onItemClick(adapterPosition)
+            }
+        }
+
         fun bind(movie: Movie) {
             binding.titleTextView.text = movie.title
-            //binding.imageView.setImageResource()
             try {
-                /*Picasso.get()
-                    .load("https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png")
-                    .into(binding.imageView)*/
-                Picasso.get()
-                    .load("http://192.168.24.116:8080/movie/preview/${movie.id}")
-                    .into(binding.imageView)
+                Glide.with(context).load(moviesData.moviePreview(movie.id)).into(binding.imageView)
             } catch (e: Exception) {
                 Log.d("Picasso", e.message.toString())
             }
@@ -76,9 +153,9 @@ class MovieAdapter(
 
     override fun getItemCount(): Int = moviesList.size
 
-    fun updateData (newData: List<Movie>) {
-        moviesList.clear () // очистите старые данные
-        moviesList.addAll (newData) // добавьте новые данные
-        notifyDataSetChanged() // уведомите адаптер об изменениях
+    fun updateData(newData: List<Movie>) {
+        moviesList.clear()
+        moviesList.addAll(newData)
+        notifyDataSetChanged()
     }
 }
