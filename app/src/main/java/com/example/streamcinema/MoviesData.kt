@@ -17,7 +17,7 @@ class MoviesData {
             ignoreUnknownKeys = true
         }
     }
-    private val url = "http://192.168.34.116:9090"
+    private val url = R.string.url
 
     suspend fun fullMovies(): List<Movie> = withContext(Dispatchers.IO) {
         val moviesResponse = client.get("${url}/movie/all")

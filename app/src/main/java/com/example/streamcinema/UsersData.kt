@@ -28,21 +28,10 @@ class UsersData {
             })
         }
     }
-    private val url = "http://192.168.34.116:9090"
+    //private val url = "http://192.168.34.116:9090"
+    private val url = R.string.url
 
     suspend fun registerUser(emailPass: EmailPass): String = withContext(Dispatchers.IO) {
-        /*val text = Json.encodeToString(
-            CinemaUser(
-                1,
-                "Test",
-                "Test",
-                " Test",
-                emailPass.email,
-                emailPass.password
-            )
-        )
-        Log.d("JSON", text)*/
-
         val data = CinemaUser(
             1,
             "Test",
