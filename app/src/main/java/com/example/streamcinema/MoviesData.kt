@@ -2,6 +2,7 @@ package com.example.streamcinema
 
 import android.util.Log
 import com.example.streamcinema.model.Movie
+import com.example.streamcinema.model.MovieFullInfo
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -21,8 +22,12 @@ class MoviesData {
 
     suspend fun fullMovies(): List<Movie> = withContext(Dispatchers.IO) {
         val moviesResponse = client.get("${url}/movie/all")
-        Log.d("RESPONSE", moviesResponse.toString())
         return@withContext Json.decodeFromString<List<Movie>>(moviesResponse.body())
+    }
+
+    suspend fun movieFullInfo(id: Int): MovieFullInfo = withContext(Dispatchers.IO) {
+        val movieFullInfoResponse = client.get("${url}/movie/full/$id")
+        return@withContext Json.decodeFromString<MovieFullInfo>(movieFullInfoResponse.body())
     }
 
     fun moviePreview(id: Int) = "$url/movie/preview/$id"

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.streamcinema.databinding.RvCardViewBinding
 import com.example.streamcinema.model.Movie
+import com.example.streamcinema.model.MovieFullInfo
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -46,8 +47,8 @@ class MainActivity : AppCompatActivity() {
         movieAdapter.setOnItemClickListener(@UnstableApi object : OnItemClickListener {
             override fun onItemClick(position: Int) {
                 //Toast.makeText(applicationContext, moviesData.movieFile(movies[position].id), Toast.LENGTH_LONG).show()
-                val intent = Intent(applicationContext, WatchVideoActivity::class.java).apply {
-                    putExtra("VIDEO_URL", moviesData.movieFile(movies[position].id))
+                val intent = Intent(applicationContext, MovieFullInfo::class.java).apply {
+                    putExtra("MOVIE_ID", moviesData.movieFile(movies[position].id))
                 }
                 startActivity(intent)
             }

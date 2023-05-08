@@ -1,7 +1,32 @@
 package com.example.streamcinema.model
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+
+@Serializable
+data class MovieFullInfo(
+    val movie: Movie,
+    val movieFile: MovieFile,
+    val genres: List<Genre>,
+    val cast: List<Actor>,
+    val directors: List<Director>,
+    val reviews: List<Review>,
+    val rating: Int
+)
+
+@Serializable
+data class Actor(
+    val id: Int,
+    val firstName: String,
+    val lastName: String,
+    val gender: String
+)
+
+@Serializable
+data class Director(
+    val id: Int,
+    val firstName: String,
+    val lastName: String
+)
 
 @Serializable
 data class Genre(
@@ -9,38 +34,12 @@ data class Genre(
     val title: String
 )
 
-
 @Serializable
 data class FullMovie(
     val movie: Movie,
     val movieFile: MovieFile
 )
 
-@Serializable
-data class MovieFile(
-    val id: Int,
-    val filePath: String,
-    val previewFilePath: String
-)
-
-@Serializable
-data class MovieCast(
-    val actorId: Int,
-    val movieId: Int,
-    val role: String
-)
-
-@Serializable
-data class MovieDirection(
-    val directorId: Int,
-    val movieId: Int
-)
-
-@Serializable
-data class MovieGenre(
-    val movieId: Int,
-    val genreId: Int
-)
 
 @Serializable
 data class Movie(
@@ -53,19 +52,23 @@ data class Movie(
 )
 
 @Serializable
-data class Actor(
+data class MovieFile(
     val id: Int,
-    val firstName: String,
-    val lastName: String,
-    val gender: String
+    val filePath: String,
+    val previewFilePath: String
 )
 
-@Serializable
-data class Rating(
-    val movieId: Int,
-    val reviewerId: Int,
+/*@Serializable
+data class Review(
+    val reviewerName: String,
     val stars: Int,
-    val numberOfRatings: Int
+)*/
+
+@Serializable
+data class Review(
+    val revId: Int,
+    val reviewerName: String,
+    val stars: Int,
 )
 
 @Serializable
@@ -74,17 +77,11 @@ data class Reviewer(
     val name: String
 )
 
+@Serializable
 data class SseEvent(
     val data: String,
     val event: String? = null,
     val id: String? = null
-)
-
-@Serializable
-data class Director(
-    val id: Int,
-    val firstName: String,
-    val lastName: String
 )
 
 @Serializable
