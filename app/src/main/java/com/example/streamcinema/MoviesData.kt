@@ -1,6 +1,5 @@
 package com.example.streamcinema
 
-import android.icu.text.CaseMap.Title
 import android.util.Log
 import com.example.streamcinema.model.Actor
 import com.example.streamcinema.model.Movie
@@ -20,7 +19,6 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.lang.Exception
 
 class MoviesData {
     private val client = HttpClient(CIO) {
@@ -36,11 +34,7 @@ class MoviesData {
             contentType(ContentType.Application.Json)
             setBody(title)
         }
-        try {
-            return@withContext Json.decodeFromString<List<Movie>>(moviesResponse.body())
-        } catch (e: Exception) {
-            return@withContext emptyList()
-        }
+        return@withContext Json.decodeFromString<List<Movie>>(moviesResponse.body<String>())
     }
 
     suspend fun fullMovies(): List<Movie> = withContext(Dispatchers.IO) {
