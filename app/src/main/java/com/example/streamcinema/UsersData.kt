@@ -31,19 +31,10 @@ class UsersData {
 
     private val url = "http://192.168.45.116:9090"
 
-    suspend fun registerUser(emailPass: EmailPass): String = withContext(Dispatchers.IO) {
-        val data = CinemaUser(
-            1,
-            "Test",
-            "Test",
-            " Test",
-            emailPass.email,
-            emailPass.password
-        )
-
+    suspend fun registerUser(cinemaUser: CinemaUser): String = withContext(Dispatchers.IO) {
         val response = client.post("http://$url/register") {
             contentType(ContentType.Application.Json)
-            setBody(data)
+            setBody(cinemaUser)
         }
 
         return@withContext response.bodyAsText()

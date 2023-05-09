@@ -90,7 +90,7 @@ data class CinemaUser(
     val id: Int,
     val lastName: String,
     val firstName: String,
-    val middleName: String?,
+    val middleName: String,
     val email: String,
     val password: String
 )

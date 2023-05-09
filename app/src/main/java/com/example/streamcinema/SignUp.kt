@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.streamcinema.databinding.ActivitySignUpBinding
+import com.example.streamcinema.model.CinemaUser
 import com.example.streamcinema.model.EmailPass
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +30,9 @@ class SignUp : AppCompatActivity() {
         }
 
         binding.button.setOnClickListener {
+            val firstName = binding.firstNameEt.text.toString()
+            val middleName = binding.middleNameEt.text.toString()
+            val lastName = binding.lastNameEt.text.toString()
             val email = binding.emailEt.text.toString()
             val pass = binding.passET.text.toString()
             val confirmPass = binding.confirmPassEt.text.toString()
@@ -36,7 +40,7 @@ class SignUp : AppCompatActivity() {
             if (email.isNotEmpty() && pass.isNotEmpty() && confirmPass.isNotEmpty()) {
                 if (pass == confirmPass) {
                     lifecycleScope.launch {
-                        val flag = UsersData().registerUser(EmailPass(email, pass))
+                        val flag = UsersData().registerUser(CinemaUser(1, lastName, firstName, middleName, email, pass))
                         if (flag == "true") {
                             Toast.makeText(this@SignUp, "Вы успешно зарегистрировались!", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this@SignUp, SignIn::class.java)
