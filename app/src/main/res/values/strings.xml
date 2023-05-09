@@ -1,5 +1,5 @@
 <resources>
-    <string name="url">http://192.168.45.116:9090/</string>
+    <string name="url">http://192.168.45.116:9090</string>
     <string name="app_name">SkyCinema</string>
     <string name="preview">Preview</string>
     <string name="pass">Password</string>
@@ -16,4 +16,6 @@
     <string name="reviews">Reviews</string>
     <string name="moviepreview">MoviePreview</string>
     <string name="watch">Смотреть</string>
+    <string name="cast">Каст</string>
+    <string name="save">Сохранить</string>
 </resources>

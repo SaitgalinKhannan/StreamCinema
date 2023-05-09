@@ -28,8 +28,8 @@ class UsersData {
             })
         }
     }
-    //private val url = "http://192.168.34.116:9090"
-    private val url = R.string.url
+
+    private val url = "http://192.168.45.116:9090"
 
     suspend fun registerUser(emailPass: EmailPass): String = withContext(Dispatchers.IO) {
         val data = CinemaUser(
@@ -50,7 +50,7 @@ class UsersData {
     }
 
     suspend fun loginUser(emailPass: EmailPass): Pair<Int, Boolean> = withContext(Dispatchers.IO) {
-        val response = client.post("http://$url/login") {
+        val response = client.post("$url/login") {
             contentType(ContentType.Application.Json)
             setBody(emailPass)
         }

@@ -2,12 +2,12 @@ package com.example.streamcinema
 
 import android.content.Context
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.util.UnstableApi
 import androidx.recyclerview.widget.GridLayoutManager
@@ -18,7 +18,7 @@ import com.example.streamcinema.model.Movie
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class UserMoviesActivity : AppCompatActivity() {
 
     private val moviesData = MoviesData()
     private val backPressDelay = 2000
@@ -28,22 +28,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val prefs = getSharedPreferences("myPrefs", MODE_PRIVATE)
-        val isLoggedIn = prefs.getBoolean("isLoggedIn", false)
-
-        if (!isLoggedIn) {
-            val intent = Intent(this, SignIn::class.java)
-            startActivity(intent)
-        }
-
         val movies = mutableListOf<Movie>()
+
+        val prefs = getSharedPreferences("myPrefs", MODE_PRIVATE)
+        val userId = prefs.getInt("id", 0)
 
         val movieAdapter = MovieAdapter(movies, moviesData, this)
         movieAdapter.setOnItemClickListener(@UnstableApi object : OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val intent = Intent(applicationContext, MovieActivity::class.java).apply {
                     val previewId = movies[position].id
-                    putExtra("movieId", previewId)
+                    putExtra("id", previewId)
                 }
                 startActivity(intent)
             }
@@ -55,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = movieAdapter
 
         lifecycleScope.launch {
-            val newList = moviesData.fullMovies()
+            val newList = moviesData.movieByUser(userId)
             movieAdapter.updateData(newList)
         }
 
@@ -64,22 +59,22 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.mainButton -> {
-                    startActivity(Intent(this@MainActivity, MainActivity::class.java))
+                    startActivity(Intent(this@UserMoviesActivity, MainActivity::class.java))
                     true
                 }
 
                 R.id.bookmarkButton -> {
-                    startActivity(Intent(this@MainActivity, UserMoviesActivity::class.java))
+                    startActivity(Intent(this@UserMoviesActivity, UserMoviesActivity::class.java))
                     true
                 }
 
                 R.id.searchButton -> {
-                    startActivity(Intent(this@MainActivity, Demo::class.java))
+                    startActivity(Intent(this@UserMoviesActivity, Demo::class.java))
                     true
                 }
 
                 R.id.profileButton -> {
-                    startActivity(Intent(this@MainActivity, Demo::class.java))
+                    startActivity(Intent(this@UserMoviesActivity, Demo::class.java))
                     true
                 }
 
@@ -101,16 +96,12 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-interface OnItemClickListener {
-    fun onItemClick(position: Int)
-}
-
-class MovieAdapter(
+class UserMovieAdapter(
     private val moviesList: MutableList<Movie>,
     private val moviesData: MoviesData,
     private val context: Context
 ) :
-    RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
+    RecyclerView.Adapter<UserMovieAdapter.MovieViewHolder>() {
 
     private var clickListener: OnItemClickListener? = null
 

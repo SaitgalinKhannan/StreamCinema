@@ -37,7 +37,7 @@ class SignIn : AppCompatActivity() {
                     if (flag.second) {
                         val editor = getSharedPreferences("myPrefs", MODE_PRIVATE).edit()
                         editor.putBoolean("isLoggedIn", true)
-                        editor.putInt("Id", flag.first)
+                        editor.putInt("id", flag.first)
                         editor.apply()
                         val intent = Intent(this@SignIn, MainActivity::class.java)
                         startActivity(intent)
