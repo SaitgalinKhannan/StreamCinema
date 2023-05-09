@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.util.UnstableApi
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
 import kotlinx.coroutines.launch
 import okhttp3.internal.wait
 
@@ -68,5 +70,36 @@ class MovieActivity : AppCompatActivity() {
                 moviesData.insertMovie(Pair(userId, movieId))
             }
         }
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_UNLABELED
+
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.mainButton -> {
+                    startActivity(Intent(this@MovieActivity, MainActivity::class.java))
+                    true
+                }
+
+                R.id.bookmarkButton -> {
+                    startActivity(Intent(this@MovieActivity, UserMoviesActivity::class.java))
+                    true
+                }
+
+                R.id.searchButton -> {
+                    startActivity(Intent(this@MovieActivity, SearchActivity::class.java))
+                    true
+                }
+
+                R.id.profileButton -> {
+                    startActivity(Intent(this@MovieActivity, Demo::class.java))
+                    true
+                }
+
+                else -> false
+            }
+        }
+
     }
 }
+

@@ -18,4 +18,5 @@
     <string name="watch">Смотреть</string>
     <string name="cast">Каст</string>
     <string name="save">Сохранить</string>
+    <string name="movie_name">Название</string>
 </resources>

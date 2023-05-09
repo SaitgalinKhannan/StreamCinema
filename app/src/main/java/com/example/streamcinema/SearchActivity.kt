@@ -2,12 +2,15 @@ package com.example.streamcinema
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.util.UnstableApi
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,12 +19,10 @@ import com.bumptech.glide.Glide
 import com.example.streamcinema.databinding.RvCardViewBinding
 import com.example.streamcinema.model.Movie
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.google.android.material.navigation.NavigationBarView
-import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.launch
 
-class UserMoviesActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity() {
 
     private val moviesData = MoviesData()
     private val backPressDelay = 2000
@@ -29,19 +30,19 @@ class UserMoviesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_search)
+
+        val searchButton: Button = findViewById(R.id.button)
+        val searchText: EditText = findViewById(R.id.search_edit_text)
 
         val movies = mutableListOf<Movie>()
 
-        val prefs = getSharedPreferences("myPrefs", MODE_PRIVATE)
-        val userId = prefs.getInt("id", 0)
-
-        val movieAdapter = UserMovieAdapter(movies, moviesData, this)
+        val movieAdapter = SearchAdapter(movies, moviesData, this)
         movieAdapter.setOnItemClickListener(@UnstableApi object : OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val intent = Intent(applicationContext, MovieActivity::class.java).apply {
                     val previewId = movies[position].id
-                    putExtra("id", previewId)
+                    putExtra("movieId", previewId)
                 }
                 startActivity(intent)
             }
@@ -52,9 +53,14 @@ class UserMoviesActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = movieAdapter
 
-        lifecycleScope.launch {
-            val newList = moviesData.movieByUser(userId)
-            movieAdapter.updateData(newList)
+        searchButton.setOnClickListener {
+            if (searchText.text.isNotEmpty()) {
+                Toast.makeText(applicationContext, "${searchText.text}", Toast.LENGTH_SHORT).show()
+                lifecycleScope.launch {
+                    val newList = moviesData.searchMovieByTitle(searchText.text.toString())
+                    movieAdapter.updateData(newList)
+                }
+            }
         }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
@@ -63,22 +69,22 @@ class UserMoviesActivity : AppCompatActivity() {
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.mainButton -> {
-                    startActivity(Intent(this@UserMoviesActivity, MainActivity::class.java))
+                    startActivity(Intent(this@SearchActivity, MainActivity::class.java))
                     true
                 }
 
                 R.id.bookmarkButton -> {
-                    startActivity(Intent(this@UserMoviesActivity, UserMoviesActivity::class.java))
+                    startActivity(Intent(this@SearchActivity, UserMoviesActivity::class.java))
                     true
                 }
 
                 R.id.searchButton -> {
-                    startActivity(Intent(this@UserMoviesActivity, SearchActivity::class.java))
+                    startActivity(Intent(this@SearchActivity, SearchActivity::class.java))
                     true
                 }
 
                 R.id.profileButton -> {
-                    startActivity(Intent(this@UserMoviesActivity, Demo::class.java))
+                    startActivity(Intent(this@SearchActivity, Demo::class.java))
                     true
                 }
 
@@ -100,12 +106,12 @@ class UserMoviesActivity : AppCompatActivity() {
     }
 }
 
-class UserMovieAdapter(
+class SearchAdapter(
     private val moviesList: MutableList<Movie>,
     private val moviesData: MoviesData,
     private val context: Context
 ) :
-    RecyclerView.Adapter<UserMovieAdapter.MovieViewHolder>() {
+    RecyclerView.Adapter<SearchAdapter.MovieViewHolder>() {
 
     private var clickListener: OnItemClickListener? = null
 

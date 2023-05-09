@@ -1,8 +1,8 @@
 package com.example.streamcinema
 
+import android.icu.text.CaseMap.Title
 import android.util.Log
 import com.example.streamcinema.model.Actor
-import com.example.streamcinema.model.EmailPass
 import com.example.streamcinema.model.Movie
 import com.example.streamcinema.model.MovieFullInfo
 import io.ktor.client.HttpClient
@@ -12,26 +12,36 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.lang.Exception
 
 class MoviesData {
     private val client = HttpClient(CIO) {
         install(ContentNegotiation) {
-            json(Json {
-                prettyPrint = true
-                isLenient = true
-            })
+            json(Json)
         }
     }
 
     private var url = "http://192.168.45.116:9090"
+
+    suspend fun searchMovieByTitle(title: String): List<Movie> = withContext(Dispatchers.IO) {
+        val moviesResponse = client.post("${url}/movie/title") {
+            contentType(ContentType.Application.Json)
+            setBody(title)
+        }
+        try {
+            return@withContext Json.decodeFromString<List<Movie>>(moviesResponse.body())
+        } catch (e: Exception) {
+            return@withContext emptyList()
+        }
+    }
 
     suspend fun fullMovies(): List<Movie> = withContext(Dispatchers.IO) {
         val moviesResponse = client.get("${url}/movie/all")

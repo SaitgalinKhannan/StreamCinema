@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.example.streamcinema.databinding.RvCardViewBinding
 import com.example.streamcinema.model.Movie
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -60,6 +61,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_UNLABELED
 
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -74,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.searchButton -> {
-                    startActivity(Intent(this@MainActivity, Demo::class.java))
+                    startActivity(Intent(this@MainActivity, SearchActivity::class.java))
                     true
                 }
 
