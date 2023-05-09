@@ -1,6 +1,5 @@
 package com.example.streamcinema
 
-import android.util.Log
 import com.example.streamcinema.model.Actor
 import com.example.streamcinema.model.Movie
 import com.example.streamcinema.model.MovieFullInfo
@@ -17,7 +16,6 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class MoviesData {
@@ -48,7 +46,7 @@ class MoviesData {
     }
 
     suspend fun insertMovie(pair: Pair<Int, Int>) = withContext(Dispatchers.IO) {
-        val response = client.post("$url/movie/usermovie/insert") {
+        client.post("$url/movie/usermovie/insert") {
             contentType(ContentType.Application.Json)
             setBody(pair)
         }
