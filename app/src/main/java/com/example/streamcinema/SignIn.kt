@@ -45,7 +45,7 @@ class SignIn : AppCompatActivity() {
                     } else {
                         Toast.makeText(
                             this@SignIn,
-                            "Не существует такого пользователя был введен неправильный пароль",
+                            "Не существует такого пользователя или был введен неправильный пароль",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
