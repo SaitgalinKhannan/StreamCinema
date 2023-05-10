@@ -12,8 +12,6 @@ import kotlinx.coroutines.launch
 class SignIn : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignInBinding
-    private val BACK_PRESS_DELAY = 2000
-    private var backPressTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -19,14 +18,11 @@ import com.bumptech.glide.Glide
 import com.example.streamcinema.databinding.RvCardViewBinding
 import com.example.streamcinema.model.Movie
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationBarView
 import kotlinx.coroutines.launch
 
 class SearchActivity : AppCompatActivity() {
 
     private val moviesData = MoviesData()
-    private val backPressDelay = 2000
-    private var backPressTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +60,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigationView.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_UNLABELED
+        bottomNavigationView.selectedItemId = R.id.searchButton
 
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -92,17 +88,6 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-    }
-
-    override fun onBackPressed() {
-        val currentTime = System.currentTimeMillis()
-        if (backPressTime + backPressDelay > currentTime) {
-            //super.onBackPressed()
-            finishAffinity()
-        } else {
-            backPressTime = currentTime
-            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show()
-        }
     }
 }
 

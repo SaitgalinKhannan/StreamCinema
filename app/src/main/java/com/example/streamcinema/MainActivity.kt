@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide
 import com.example.streamcinema.databinding.RvCardViewBinding
 import com.example.streamcinema.model.Movie
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationBarView
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -61,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigationView.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_UNLABELED
+        bottomNavigationView.selectedItemId = R.id.mainButton
 
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -94,7 +93,6 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val currentTime = System.currentTimeMillis()
         if (backPressTime + backPressDelay > currentTime) {
-            //super.onBackPressed()
             finishAffinity()
         } else {
             backPressTime = currentTime

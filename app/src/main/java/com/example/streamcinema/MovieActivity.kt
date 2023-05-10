@@ -39,7 +39,6 @@ class MovieActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("myPrefs", MODE_PRIVATE)
         val userId = prefs.getInt("id", 0)
         val movieId = intent.getIntExtra("movieId", 1)
-        //Toast.makeText(applicationContext, "$userId $movieId", Toast.LENGTH_SHORT).show()
 
         lifecycleScope.launch {
             val movieFullInfo = moviesData.movieFullInfo(movieId)
