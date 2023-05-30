@@ -61,32 +61,30 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:gravity="center"
-                    android:drawableBottom="@drawable/bookmark"/>
+                    android:drawableBottom="@drawable/play"
+                    android:gravity="center" />
 
                 <Button
                     android:id="@+id/movie_cast"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="8dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:gravity="center"
-                    android:drawableBottom="@drawable/bookmark"/>
+                    android:drawableBottom="@drawable/actors"
+                    android:gravity="center" />
 
                 <Button
                     android:id="@+id/movie_save"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="8dp"
                     android:layout_marginStart="8dp"
-                    android:gravity="center"
-                    android:drawableBottom="@drawable/bookmark"/>
+                    android:layout_marginTop="8dp"
+                    android:drawableBottom="@drawable/bookmark"
+                    android:gravity="center" />
             </LinearLayout>
-
-
         </LinearLayout>
 
 
