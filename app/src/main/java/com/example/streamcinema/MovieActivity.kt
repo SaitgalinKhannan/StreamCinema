@@ -2,6 +2,7 @@ package com.example.streamcinema
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.util.UnstableApi
 import com.bumptech.glide.Glide
+import com.example.streamcinema.model.Movie
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import kotlinx.coroutines.launch
@@ -41,13 +43,17 @@ class MovieActivity : AppCompatActivity() {
         val movieId = intent.getIntExtra("movieId", 1)
 
         lifecycleScope.launch {
-            val movieFullInfo = moviesData.movieFullInfo(movieId)
-            Glide.with(applicationContext)
-                .load(moviesData.moviePreview(movieId))
-                .into(moviePoster)
-            movieTitle.text = movieFullInfo.movie.title
-            movieInfo.text =
-                "${movieFullInfo.movie.releaseCountry.uppercase()}, ${movieFullInfo.movie.releaseYear}, ${movieFullInfo.movie.runtimeMinutes} мин., ${movieFullInfo.movie.language.uppercase()}"
+            try {
+                val movieFullInfo = moviesData.movieFullInfo(movieId)
+                Glide.with(applicationContext)
+                    .load(moviesData.moviePreview(movieId))
+                    .into(moviePoster)
+                movieTitle.text = movieFullInfo.movie.title
+                movieInfo.text =
+                    "${movieFullInfo.movie.releaseCountry.uppercase()}, ${movieFullInfo.movie.releaseYear}, ${movieFullInfo.movie.runtimeMinutes} мин., ${movieFullInfo.movie.language.uppercase()}"
+            } catch (e: Exception) {
+                Log.d("Exception", e.toString())
+            }
         }
 
         movieWatch.setOnClickListener {
@@ -64,9 +70,18 @@ class MovieActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        var moviesList: List<Movie>
+
         movieSave.setOnClickListener {
             lifecycleScope.launch {
-                moviesData.insertMovie(Pair(userId, movieId))
+                moviesList = moviesData.movieByUser(userId)
+                if (moviesList.any { it.id == movieId }) {
+                    Toast.makeText(applicationContext, "${moviesList.size}", Toast.LENGTH_SHORT)
+                        .show()
+                    moviesData.deleteMovie(Pair(userId, movieId))
+                } else {
+                    moviesData.insertMovie(Pair(userId, movieId))
+                }
             }
         }
 
@@ -91,7 +106,7 @@ class MovieActivity : AppCompatActivity() {
                 }
 
                 R.id.profileButton -> {
-                    startActivity(Intent(this@MovieActivity, Demo::class.java))
+                    startActivity(Intent(this@MovieActivity, ProfileActivity::class.java))
                     true
                 }
 

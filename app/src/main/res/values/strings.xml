@@ -19,4 +19,6 @@
     <string name="cast">Каст</string>
     <string name="save">Сохранить</string>
     <string name="movie_name">Название</string>
+    <string name="exit">Выйти из аккаунта</string>
+    <string name="save_data">Сохранить данные</string>
 </resources>

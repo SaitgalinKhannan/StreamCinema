@@ -19,7 +19,7 @@ class SignIn : AppCompatActivity() {
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.textView.setOnClickListener {
+        binding.signUpButton.setOnClickListener {
             val intent = Intent(this, SignUp::class.java)
             startActivity(intent)
         }

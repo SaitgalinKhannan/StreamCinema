@@ -80,7 +80,7 @@ class SearchActivity : AppCompatActivity() {
                 }
 
                 R.id.profileButton -> {
-                    startActivity(Intent(this@SearchActivity, Demo::class.java))
+                    startActivity(Intent(this@SearchActivity, ProfileActivity::class.java))
                     true
                 }
 

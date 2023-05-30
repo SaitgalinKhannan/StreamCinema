@@ -16,7 +16,8 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import com.example.streamcinema.databinding.ActivityWatchVideoBinding
 
-@UnstableApi class WatchVideoActivity : AppCompatActivity() {
+@UnstableApi
+class WatchVideoActivity : AppCompatActivity() {
 
     private val viewBinding by lazy(LazyThreadSafetyMode.NONE) {
         ActivityWatchVideoBinding.inflate(layoutInflater)

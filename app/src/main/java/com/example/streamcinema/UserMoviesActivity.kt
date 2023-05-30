@@ -27,7 +27,7 @@ class UserMoviesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_user_movies)
 
         val movies = mutableListOf<Movie>()
 
@@ -39,7 +39,7 @@ class UserMoviesActivity : AppCompatActivity() {
             override fun onItemClick(position: Int) {
                 val intent = Intent(applicationContext, MovieActivity::class.java).apply {
                     val previewId = movies[position].id
-                    putExtra("id", previewId)
+                    putExtra("movieId", previewId)
                 }
                 startActivity(intent)
             }
@@ -76,7 +76,7 @@ class UserMoviesActivity : AppCompatActivity() {
                 }
 
                 R.id.profileButton -> {
-                    startActivity(Intent(this@UserMoviesActivity, Demo::class.java))
+                    startActivity(Intent(this@UserMoviesActivity, ProfileActivity::class.java))
                     true
                 }
 

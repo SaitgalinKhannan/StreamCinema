@@ -19,7 +19,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
-
     private val moviesData = MoviesData()
     private val backPressDelay = 2000
     private var backPressTime: Long = 0
@@ -80,14 +79,13 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.profileButton -> {
-                    startActivity(Intent(this@MainActivity, Demo::class.java))
+                    startActivity(Intent(this@MainActivity, ProfileActivity::class.java))
                     true
                 }
 
                 else -> false
             }
         }
-
     }
 
     override fun onBackPressed() {
